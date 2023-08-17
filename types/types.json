@@ -1,0 +1,25 @@
+{
+    "$schema": "./schema.json",
+    "types": {
+        "unixTimestamp": {
+            "name": "unix timestamp",
+            "description": "Describes point in time. It is the number of seconds that have elapsed since the Unix epoch, excluding leap seconds. The Unix epoch is 00:00:00 UTC on 1 January 1970." 
+        },
+        "durationSeconds": {
+            "name": "duration",
+            "description": "Represents the duration period in seconds."
+        },
+        "blockNumber": {
+            "name": "block number",
+            "description": "Describes point in time in a form of block number."
+        },
+        "durationBlocks": {
+            "name": "duration in blocks",
+            "description": "Represents the duration period expressed in number of blocks."
+        },
+        "ipfsHash": {
+            "name": "ipfs hash",
+            "description": "Content ipfs hash."
+        }
+    }
+}

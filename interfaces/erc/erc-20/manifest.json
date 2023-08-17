@@ -1,0 +1,276 @@
+{
+    "$schema": "../../schema.json",
+    "tags": ["token", "erc20", "fungible token", "erc 20"],
+    "name": "ERC20 token interface",
+    "description": "A standard interface for tokens.",
+    "eventDecorators": [
+        {
+            "signature": "Transfer(address,address,uint256)",
+            "name": "Token transfer",
+            "description": "Indicates that ERC20 transfer has occurred.",
+            "parameterDecorators": [
+                {
+                    "name": "Sender address",
+                    "description": "Address from which the ERC20 token was sent.",
+                    "recommendedTypes": [],
+                    "indexed": true
+                },
+                {
+                    "name": "Recipient address",
+                    "description": "Address to which the ERC20 token was sent.",
+                    "recommendedTypes": [],
+                    "indexed": true
+                },
+                {
+                    "name": "Token amount",
+                    "description": "The amount of ERC20 token that was sent.",
+                    "recommendedTypes": [],
+                    "hints": [
+                        {
+                            "id": "decimals",
+                            "decimals_fetcher": "$this.decimals()"
+                        }
+                    ],
+                    "indexed": false
+                }
+            ]
+        },
+        {
+            "signature": "Approval(address,address,uint256)",
+            "name": "Token spending approval",
+            "description": "Indicates that approval to spend ERC20 token has occurred.",
+            "parameterDecorators": [
+                {
+                    "name": "Approver address",
+                    "description": "Address of the owner who approved spending of their ERC20 token.",
+                    "recommendedTypes": [],
+                    "indexed": true
+                },
+                {
+                    "name": "Spender address",
+                    "description": "Address for which the owner has approved to spend their ERC20 token.",
+                    "recommendedTypes": [],
+                    "indexed": true
+                },
+                {
+                    "name": "Approved token amount",
+                    "description": "The amount of ERC20 token that was approved for spending.",
+                    "recommendedTypes": [],
+                    "hints": [
+                        {
+                            "id": "decimals",
+                            "decimals_fetcher": "$this.decimals()"
+                        }
+                    ],
+                    "indexed": false
+                }
+            ]
+        }
+    ],
+    "functionDecorators": [
+        {
+            "signature": "totalSupply()",
+            "name": "Get total token supply",
+            "description": "Returns the total supply of this ERC20 token.",
+            "parameterDecorators": [],
+            "returnDecorators": [
+                {
+                    "name": "Total token supply",
+                    "description": "The total supply of this ERC20 token.",
+                    "recommendedTypes": [],
+                    "solidityType": "uint256"
+                }
+            ],
+            "emittableEvents": [],
+            "readOnly": true
+        },
+        {
+            "signature": "balanceOf(address)",
+            "name": "Get token balance",
+            "description": "Returns the amount of ERC20 tokens owned by the specified address.",
+            "parameterDecorators": [
+                {
+                    "name": "Account address",
+                    "description": "Address of the account for which to check balance.",
+                    "recommendedTypes": [
+                        "common.contract-caller",
+                        "common.erc20-receiver"
+                    ]
+                }
+            ],
+            "returnDecorators": [
+                {
+                    "name": "Token amount",
+                    "description": "The amount of the ERC20 tokens owned by the specified address.",
+                    "recommendedTypes": [],
+                    "hints": [
+                        {
+                            "id": "decimals",
+                            "decimals_fetcher": "$this.decimals()"
+                        }
+                    ],
+                    "solidityType": "uint256"
+                }
+            ],
+            "emittableEvents": [],
+            "readOnly": true
+        },
+        {
+            "signature": "transfer(address,uint256)",
+            "name": "Transfer tokens",
+            "description": "This function will transfer your tokens to another user or smart contract.",
+            "parameterDecorators": [
+                {
+                    "name": "Recipient address",
+                    "description": "User or smart contract which will receive your tokens.",
+                    "recommendedTypes": [
+                        "common.contract-caller",
+                        "common.erc20-receiver"
+                    ]
+                },
+                {
+                    "name": "Token amount",
+                    "description": "Amount of tokens which you will send.",
+                    "recommendedTypes": [],
+                    "hints": [
+                        {
+                            "id": "decimals",
+                            "decimals_fetcher": "$this.decimals()"
+                        }
+                    ]
+                }
+            ],
+            "returnDecorators": [
+                {
+                    "name": "Operation succeeded",
+                    "description": "Indicates whether the operation was successful.",
+                    "recommendedTypes": [],
+                    "solidityType": "bool"
+                }
+            ],
+            "emittableEvents": [
+                "Transfer(address,address,uint256)"
+            ],
+            "readOnly": false
+        },
+        {
+            "signature": "transferFrom(address,address,uint256)",
+            "name": "Transfer approved tokens",
+            "description": "This function will transfer tokens from one address to another. It will only work if the owner of that address allowed you to spend their tokens.",
+            "parameterDecorators": [
+                {
+                    "name": "Sending from address",
+                    "description": "The address from which the tokens will be sent. The owner of that address had to allow you to spend their tokens.",
+                    "recommendedTypes": [
+                        "common.contract-caller",
+                        "common.erc20-receiver"
+                    ]
+                },
+                {
+                    "name": "Recipient address",
+                    "description": "The address which will receive the tokens.",
+                    "recommendedTypes": [
+                        "common.contract-caller",
+                        "common.erc20-receiver"
+                    ]
+                },
+                {
+                    "name": "Token amount",
+                    "description": "The amount of tokens being sent.",
+                    "recommendedTypes": [],
+                    "hints": [
+                        {
+                            "id": "decimals",
+                            "decimals_fetcher": "$this.decimals()"
+                        }
+                    ]
+                }
+            ],
+            "returnDecorators": [
+                {
+                    "name": "Operation succeeded",
+                    "description": "Indicates whether the operation was successful.",
+                    "recommendedTypes": [],
+                    "solidityType": "bool"
+                }
+            ],
+            "emittableEvents": [
+                "Transfer(address,address,uint256)",
+                "Approval(address,address,uint256)"
+            ],
+            "readOnly": false
+        },
+        {
+            "signature": "approve(address,uint256)",
+            "name": "Approve token spending",
+            "description": "This function will allow another user or smart contract to spend your tokens. This is commonly used to allow smart contracts to work with your tokens.",
+            "parameterDecorators": [
+                {
+                    "name": "Spender",
+                    "description": "The address of the user or contract which will be able to spend your tokens.",
+                    "recommendedTypes": [
+                        "common.contract-caller"
+                    ]
+                },
+                {
+                    "name": "Approval amount",
+                    "description": "The amount to approve for spending.",
+                    "recommendedTypes": [],
+                    "hints": [
+                        {
+                            "id": "decimals",
+                            "decimals_fetcher": "$this.decimals()"
+                        }
+                    ]
+                }
+            ],
+            "returnDecorators": [
+                {
+                    "name": "Operation succeeded",
+                    "description": "Indicates whether the operation was successful.",
+                    "recommendedTypes": [],
+                    "solidityType": "bool"
+                }
+            ],
+            "emittableEvents": [
+                "Approval(address,address,uint256)"
+            ],
+            "readOnly": false
+        },
+        {
+            "signature": "allowance(address,address)",
+            "name": "Get spend allowance",
+            "description": "This function will return how much tokens some address has allowed some other user or contract to spend.",
+            "parameterDecorators": [
+                {
+                    "name": "Address which approved the spend",
+                    "description": "Address of the owner which approved spending.",
+                    "recommendedTypes": [
+                        "common.contract-caller"
+                    ]
+                },
+                {
+                    "name": "Address for which the spend was approved",
+                    "description": "Address of the spender.",
+                    "recommendedTypes": []
+                }
+            ],
+            "returnDecorators": [
+                {
+                    "name": "Approved token amount",
+                    "description": "The amount which was approved for spending.",
+                    "recommendedTypes": [],
+                    "hints": [
+                        {
+                            "id": "decimals",
+                            "decimals_fetcher": "$this.decimals()"
+                        }
+                    ],
+                    "solidityType": "uint256"
+                }
+            ],
+            "emittableEvents": [],
+            "readOnly": true
+        }
+    ]
+}

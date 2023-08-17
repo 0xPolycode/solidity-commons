@@ -1,0 +1,72 @@
+{
+    "$schema": "../../schema.json",
+    "tags": ["mintable token", "mint", "mint token", "mintable erc20"],
+    "name": "ERC20 Mintable",
+    "description": "Extension of ERC20 that contains the mint function used to create new tokens and therefore increase the supply.",
+    "eventDecorators": [
+        {
+            "signature": "Transfer(address,address,uint256)",
+            "name": "Token transfer",
+            "description": "Indicates that ERC20 transfer has occurred.",
+            "parameterDecorators": [
+                {
+                    "name": "Sender address",
+                    "description": "Address from which the ERC20 token was sent.",
+                    "recommendedTypes": [],
+                    "indexed": true
+                },
+                {
+                    "name": "Recipient address",
+                    "description": "Address to which the ERC20 token was sent.",
+                    "recommendedTypes": [],
+                    "indexed": true
+                },
+                {
+                    "name": "Token amount",
+                    "description": "The amount of ERC20 token that was sent.",
+                    "recommendedTypes": [],
+                    "hints": [
+                        {
+                            "id": "decimals",
+                            "decimals_fetcher": "$this.decimals()"
+                        }
+                    ],
+                    "indexed": false
+                }
+            ]
+        }
+    ],
+    "functionDecorators": [
+        {
+            "signature": "mint(address,uint256)",
+            "name": "Mint",
+            "description": "Creates new amount of tokens and assigns them to the given wallet.",
+            "parameterDecorators": [
+                {
+                    "name": "Wallet address",
+                    "description": "The address of the wallet to receive the newly created tokens.",
+                    "recommendedTypes": [
+                        "common.contract-caller",
+                        "common.erc20-receiver"
+                    ]
+                },
+                {
+                    "name": "Token amount",
+                    "description": "Amount of the tokens to create.",
+                    "recommendedTypes": [],
+                    "hints": [
+                        {
+                            "id": "decimals",
+                            "decimals_fetcher": "$this.decimals()"
+                        }
+                    ]
+                }
+            ],
+            "returnDecorators": [],
+            "emittableEvents": [
+                "Transfer(address,address,uint256)"
+            ],
+            "readOnly": false
+        }
+    ]
+}

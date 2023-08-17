@@ -1,0 +1,103 @@
+{
+    "$schema": "../../schema.json",
+    "tags": ["token wrapper", "erc20 wrapper"],
+    "name": "ERC20 Wrapper",
+    "description": "Extension that allows users deposit and withdraw 'underlying tokens' and receieve a matching number of 'wrapped tokens'.",
+    "eventDecorators": [
+        {
+            "signature": "Transfer(address,address,uint256)",
+            "name": "Token transfer",
+            "description": "Indicates that ERC20 transfer has occurred.",
+            "parameterDecorators": [
+                {
+                    "name": "Sender address",
+                    "description": "Address from which the ERC20 token was sent.",
+                    "recommendedTypes": [],
+                    "indexed": true
+                },
+                {
+                    "name": "Recipient address",
+                    "description": "Address to which the ERC20 token was sent.",
+                    "recommendedTypes": [],
+                    "indexed": true
+                },
+                {
+                    "name": "Token amount",
+                    "description": "The amount of ERC20 token that was sent.",
+                    "recommendedTypes": [],
+                    "hints": [
+                        {
+                            "id": "decimals",
+                            "decimals_fetcher": "$this.decimals()"
+                        }
+                    ],
+                    "indexed": false
+                }
+            ]
+        }
+    ],
+    "functionDecorators": [
+        {
+            "signature": "depositFor(address,uint256)",
+            "name": "Deposit for",
+            "description": "Deposits underlying token and creates the equal amount of wrapped tokens.",
+            "parameterDecorators": [
+                {
+                    "name": "Receiver",
+                    "description": "Account to receive wrapped tokens.",
+                    "recommendedTypes": [
+                        "common.contract-caller",
+                        "common.erc20-receiver"
+                    ]
+                },
+                {
+                    "name": "Amount",
+                    "description": "Amount of the underlying tokens to deposit.",
+                    "recommendedTypes": [],
+                    "hints": [
+                        {
+                            "id": "decimals",
+                            "decimals_fetcher": "$this.decimals()"
+                        }
+                    ]
+                }
+            ],
+            "returnDecorators": [],
+            "emittableEvents": [
+                "Transfer(address,address,uint256)"
+            ],
+            "readOnly": false
+        },
+        {
+            "signature": "withdrawTo(address,uint256)",
+            "name": "Withdraw to",
+            "description": "Withdraws underlying token and burns the equal amount of wrapped tokens.",
+            "parameterDecorators": [
+                {
+                    "name": "Receiver",
+                    "description": "Account to receive underlying tokens.",
+                    "recommendedTypes": [
+                        "common.contract-caller",
+                        "common.erc20-receiver"
+                    ]
+                },
+                {
+                    "name": "Amount",
+                    "description": "Amount of the underlying tokens to withdraw.",
+                    "recommendedTypes": [],
+                    "hints": [
+                        {
+                            "id": "decimals",
+                            "decimals_fetcher": "$this.decimals()"
+                        }
+                    ]
+                }
+            ],
+            "returnDecorators": [],
+            "emittableEvents": [
+                "Transfer(address,address,uint256)"
+            ],
+            "readOnly": false
+        }
+    ]
+}

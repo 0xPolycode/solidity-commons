@@ -1,0 +1,117 @@
+{
+    "$id": "https://schemas.dev3.sh/v1/contract-decorator",
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "name": "EVM contract interface descriptor",
+    "description": "Describes one smart contract interface by providing additional information about events, functions, their parameters and return values.",
+    "definitions": {
+        "recommendedTypes": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "string"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "typeDecorators": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": { "type": "string" },
+                    "description": { "type": "string" },
+                    "recommendedTypes": { "$ref": "#/definitions/recommendedTypes" },
+                    "parameters": { "$ref": "#/definitions/typeDecorators" }
+                },
+                "required": ["name", "description", "recommendedTypes"]
+            }
+        },
+        "eventTypeDecorators": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": { "type": "string" },
+                    "description": { "type": "string" },
+                    "recommendedTypes": { "$ref": "#/definitions/recommendedTypes" },
+                    "parameters": { "$ref": "#/definitions/typeDecorators" },
+                    "indexed": { "type": "boolean" }
+                },
+                "required": ["name", "description", "recommendedTypes", "indexed"]
+            }
+        },
+        "returnTypeDecorators": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": { "type": "string" },
+                    "description": { "type": "string" },
+                    "recommendedTypes": { "$ref": "#/definitions/recommendedTypes" },
+                    "parameters": { "$ref": "#/definitions/typeDecorators" },
+                    "solidityType": { "type": "string" }
+                },
+                "required": ["name", "description", "recommendedTypes", "solidityType"]
+            }
+        }
+    }, 
+    "type": "object",
+    "properties": {
+        "tags": {
+            "type": "array",
+            "items": { "type": "string" }
+        },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "eventDecorators": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "signature": { "type": "string" },
+                    "name": { "type": "string" },
+                    "description": { "type": "string" },
+                    "parameterDecorators": { "$ref": "#/definitions/eventTypeDecorators" }
+                },
+                "additionalProperties": false,
+                "required": [ "signature", "name", "description", "parameterDecorators" ]
+            }
+        },
+        "functionDecorators": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "signature": { "type": "string" },
+                    "name": { "type": "string" },
+                    "description": { "type": "string" },
+                    "parameterDecorators": { "$ref": "#/definitions/typeDecorators" },
+                    "returnDecorators": { "$ref": "#/definitions/returnTypeDecorators" },
+                    "emittableEvents": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                    },
+                    "readOnly": { "type": "boolean" }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "signature",
+                    "name",
+                    "description",
+                    "parameterDecorators",
+                    "returnDecorators",
+                    "emittableEvents",
+                    "readOnly"
+                ]
+            }
+        }
+    },
+    "required": ["tags", "name", "description", "eventDecorators", "functionDecorators"]
+}
